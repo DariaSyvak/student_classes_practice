@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Test {
     public static void main(String[] args) {
 
@@ -22,5 +26,50 @@ public class Test {
         Print how many students are MathStudent with message -> "Math students = {numberOfMathStudents}"
         Print how many students are ScienceStudent with message -> "Science students = {numberOfScienceStudents}"
          */
+
+        Scanner input = new Scanner(System.in);
+
+        List<Student> students = new ArrayList<>();
+        do {
+            System.out.println(UserQuestions.askToJoin);
+
+            if (input.next().toLowerCase().startsWith("y")) {
+                try {
+                    System.out.println(UserQuestions.askFirstName);
+                    String firstN = input.next();
+                    System.out.println(UserQuestions.askLastName);
+                    String lastN = input.next();
+                    System.out.println(UserQuestions.askAge);
+                    int age = input.nextInt();
+                    Permission.checkAge(age);
+                    System.out.println(UserQuestions.askGender);
+                    String gender = input.next();
+                    System.out.println(UserQuestions.askClassName);
+                    String classN = input.next();
+                    Permission.checkClassName(classN);
+
+                    students.add(classN.equalsIgnoreCase("math") ?
+                            new MathStudent(firstN, lastN, age, gender, classN) :
+                            new ScienceStudent(firstN, lastN, age, gender, classN));
+
+                    System.out.println("Congratulations! You are registered for " + classN + " class .");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
+            }
+
+        } while (students.size() < 3);
+
+        int mathC = 0, scienceC = 0;
+        for (Student student : students) {
+            if (student.getClassName().equalsIgnoreCase("math")) mathC++;
+            else scienceC++;
+            System.out.println(student);
+        }
+
+        System.out.println("Math students = " + mathC +
+                "\nScience students = " + scienceC);
+
     }
 }
